@@ -35,13 +35,17 @@ body {
   padding-left: 55px; /* Thêm khoảng cách bên trái */
 }
 
+/* Fixed cloud styles */
 .cloud {
   position: absolute;
   width: 350px;
   height: auto;
-  opacity: 0.8;
+  opacity: 0.9;
   z-index: 1;
-  animation: float 3s ease-in-out infinite; /* Hiệu ứng trôi nổi */
+  /* Using object-fit to ensure the clouds display fully */
+  object-fit: contain;
+  display: block;
+  max-width: 100%;
 }
 
 /* Điều chỉnh đám mây bên trái */
@@ -67,11 +71,6 @@ body {
   justify-content: center;
   gap: 20px; /* Khoảng cách giữa hình và chữ */
   margin-bottom: 20px;
-}
-
-.header-img {
-  max-width: 150px; /* Kích thước hình tiêu đề */
-  height: auto;
 }
 
 .header-text {
@@ -145,16 +144,68 @@ body {
   text-align: center;
 }
 
+/* Animated Gallery Styling */
 .bosco-gallery {
   margin-top: 40px;
   text-align: center;
+  overflow: hidden;
 }
 
 .bosco-gallery h2 {
   font-size: 28px;
   font-weight: bold;
-  color: #000; /* Màu chữ */
+  color: #000;
   margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  animation: fadeInDown 0.8s ease-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gallery-container {
+  position: relative;
+  padding: 0 30px;
+  margin-bottom: 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
+  padding: 10px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.gallery-nav:hover {
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  border: 2px solid white;
+}
+
+.gallery-nav.prev {
+  left: 5px;
+}
+
+.gallery-nav.next {
+  right: 5px;
 }
 
 .gallery {
@@ -162,31 +213,222 @@ body {
   gap: 20px;
   overflow-x: auto;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  scroll-behavior: smooth; /* Cuộn mượt */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scroll-behavior: smooth;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .gallery-item {
-  flex: 0 0 auto; /* Đảm bảo các item không co giãn */
+  flex: 0 0 auto;
   width: 180px;
   height: 260px;
   overflow: hidden;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeItemIn 0.5s forwards;
+  border: 3px solid transparent;
+}
+
+.gallery::-webkit-scrollbar {
+  display: none;
+}
+
+/* Staggered animation delay for items */
+.gallery-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.gallery-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.gallery-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.gallery-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.gallery-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.gallery-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+  border: 3px solid white;
+  box-shadow: 0 0 20px rgba(255, 154, 158, 0.6);
+}
+
+.gallery-item:hover::before {
+  opacity: 1;
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .gallery-item:hover img {
   transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item .caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.gallery-item:hover .caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.auto-scroll-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 5px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.indicator-dot.active {
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 154, 158, 0.6);
+  border: 1px solid white;
+}
+
+.indicator-dot:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 18px;
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4, #b35f89, #8a63a8);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+  animation: borderRotate 4s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 60%;
+  }
+}
+
+@keyframes fadeItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auto-scroll animation */
+@keyframes autoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(
+      calc(-200px * 5)
+    ); /* Adjust based on number of items */
+  }
+}
+
+.auto-scrolling {
+  animation: autoScroll 30s linear infinite;
 }
 
 .bosco-footer {
@@ -303,9 +545,7 @@ p {
   font-size: 16px; /* Adjust font size if needed */
 }
 
-/* Định dạng mặc định cho desktop đã có */
-
-/* Responsive cho màn hình nhỏ hơn 768px (điện thoại) */
+/* Responsive for smaller screens */
 @media (max-width: 768px) {
   .container {
     max-width: 100%;
@@ -316,9 +556,13 @@ p {
     padding: 20px 10px;
   }
 
+  /* Adjusted cloud styles for mobile */
   .cloud {
-    width: 150px; /* Giảm kích thước đám mây */
-    opacity: 0.5; /* Tăng độ trong suốt */
+    width: 150px;
+    opacity: 0.7;
+    /* These properties ensure the clouds display properly */
+    display: block;
+    object-fit: contain;
   }
 
   .cloud-left,
@@ -337,15 +581,29 @@ p {
     padding: 0 10px; /* Thêm khoảng cách hai bên */
   }
 
+  .gallery-container {
+    padding: 5px;
+  }
+
   .gallery {
-    flex-wrap: wrap; /* Cho phép xuống dòng */
-    gap: 10px; /* Giảm khoảng cách giữa các item */
-    padding: 10px;
+    gap: 15px;
+    padding: 15px;
   }
 
   .gallery-item {
-    width: 45%; /* Điều chỉnh kích thước item */
-    height: auto; /* Tự động điều chỉnh chiều cao */
+    width: 150px;
+    height: 220px;
+    border-width: 2px;
+  }
+
+  .gallery-nav {
+    width: 35px;
+    height: 35px;
+  }
+
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
   }
 
   #login-btn {
@@ -373,7 +631,7 @@ p {
     font-size: 16px; /* Giảm kích thước chữ */
     padding: 10px 15px; /* Giảm padding */
     width: 90%; /* Chiếm 90% chiều rộng màn hình */
-    margin: 20 auto
+    margin: 20 auto;
   }
 
   .side-image {
@@ -485,5 +743,27 @@ p {
   }
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-container {
+    padding: 3px;
+  }
+
+  .gallery {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .gallery-item {
+    width: 130px;
+    height: 190px;
+    border-width: 2px;
+  }
+
+  .gallery-nav {
+    width: 30px;
+    height: 30px;
   }
 }

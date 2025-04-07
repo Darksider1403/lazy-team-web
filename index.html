@@ -1,70 +1,104 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-    <head>
-        <meta charset="UTF-8">
-        <title>LazyTeam 10th - Gacha Game</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LazyTeam 10th - Gacha Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    <body>
-        <div class="container">
-            <header class="bosco-header">
-                <img src="assets/1title.png" alt="LazyTeam 10th" class="header-img">
-                <img src="assets/may31.png" alt="Cloud 1" class="cloud cloud-left">
-                <img src="assets/may12.png" alt="Cloud 2" class="cloud cloud-right">
-                <p class="bosco-description">
-                    Nhân dịp LazyTeam tròn 10 tuổi, chúng mình tổ chức mini trò chơi đơn giản - gacha số lượng giới hạn
-                    mỗi ngày! Mỗi tài khoản sẽ có 5 lượt quay. Trúng quà hay không là do may mắn của bạn đó!
-                </p>
-            </header>
+<body>
+    <div class="container">
+        <header class="bosco-header">
+            <!-- Make sure the header image is loaded first for better z-index stacking -->
+            <img src="./assets/1title.png" alt="LazyTeam 10th" class="header-img">
 
-            <main class="bosco-main">
-                <div class="footer-image-container">
-                    <img src="assets/final1.png" alt="Happy Anniversary" class="footer-image" />
+            <!-- Cloud images with proper attributes to ensure full visibility -->
+            <img src="./assets/may31.png" alt="Cloud Left" class="cloud cloud-left">
+            <img src="./assets/may12.png" alt="Cloud Right" class="cloud cloud-right">
+
+            <p class="bosco-description">
+                Nhân dịp LazyTeam tròn 10 tuổi, chúng mình tổ chức mini trò chơi đơn giản - gacha số lượng giới hạn
+                mỗi ngày! Mỗi tài khoản sẽ có 5 lượt quay. Trúng quà hay không là do may mắn của bạn đó!
+            </p>
+        </header>
+
+        <main class="bosco-main">
+            <button id="login-btn">Đăng nhập Google để chơi</button>
+            <div id="gacha-box" style="display: none;">
+                <p>Bạn còn <span id="spin-count">5</span> lượt quay hôm nay</p>
+                <button id="spin-btn">Quay Gacha 🎰</button>
+                <div id="result"></div>
+            </div>
+        </main>
+
+        <section class="bosco-gallery">
+            <h2>TIN TỨC</h2>
+
+            <div class="gallery-container">
+                <!-- Navigation Arrows -->
+                <div class="gallery-nav prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                    </svg>
                 </div>
-                <button id="login-btn">Đăng nhập Google để chơi</button>
-                <div id="gacha-box" style="display: none;">
-                    <p>Ban còn 5 lượt quay hôm nay</p>
-                    <button id="spin-btn">Quay Gacha 🎰</button>
-                    <div id="result"></div>
-                </div>
-            </main>
 
-            <section class="bosco-gallery">
-                <h2>TIN TỨC</h2>
                 <div class="gallery">
                     <div class="gallery-item">
                         <img src="assets/image(1).png" alt="Image 1">
+                        <div class="caption">Manga Title 1</div>
                     </div>
                     <div class="gallery-item">
                         <img src="assets/image(2).png" alt="Image 2">
+                        <div class="caption">Manga Title 2</div>
                     </div>
                     <div class="gallery-item">
                         <img src="assets/image(3).png" alt="Image 3">
+                        <div class="caption">Manga Title 3</div>
                     </div>
                     <div class="gallery-item">
                         <img src="assets/image(4).png" alt="Image 4">
+                        <div class="caption">Manga Title 4</div>
                     </div>
                     <div class="gallery-item">
                         <img src="assets/image(5).png" alt="Image 5">
+                        <div class="caption">Manga Title 5</div>
                     </div>
                 </div>
-            </section>
-            <footer class="bosco-footer">
-                <a href="https://www.facebook.com/houseofluoi" target="_blank" class="footer-link">
-                    Theo dõi chúng tôi trên Facebook
-                </a>
-            </footer>
-            <audio id="background-music" src="assets/wang-ok--featduke-lee.mp3" autoplay loop></audio>
-        </div>
-        <div id="loading-screen">
-            <div class="spinner"></div>
-        </div>
 
-        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-        <script type="module" src="app.js"></script>
-    </body>
+                <div class="gallery-nav next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Indicator Dots -->
+            <div class="auto-scroll-indicator">
+                <div class="indicator-dot active"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+            </div>
+        </section>
+
+
+        <footer class="bosco-footer">
+            <a href="https://www.facebook.com/houseofluoi" target="_blank" class="footer-link">
+                Theo dõi chúng tôi trên Facebook
+            </a>
+        </footer>
+    </div>
+
+    <!-- Modified to use type="module" for proper ES6 module imports -->
+    <script type="module" src="app.js"></script>
+    <script src="gallery.js"></script>
+</body>
 
 </html>
